@@ -1,0 +1,24 @@
+{
+    "cloudcode.apigee.dockerOptions": {
+
+        "environmentVariables": {
+            "XTERM": "xterm-256color"
+        },
+        "dns": "8.8.8.8",
+        "detached": true,
+        "privileged": true,
+        "labels": {},
+        "volumes": {},
+        "additionalArguments": ""
+    },
+    "cloudcode.apigee.gemini.options": {
+        
+        "enterpriseContext": {
+            "enabled": true,
+            "includeMetadata": true,
+            "includeSecurity": true,
+            "includeSchema": true
+        },
+        "enableRemoteMockServer": false
+    }
+}

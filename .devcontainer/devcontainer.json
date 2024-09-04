@@ -1,0 +1,70 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-outside-of-docker
+{
+	"name": "Google Cloud Platform tools",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	"features": {
+		// The next line opts to include the latest GitHub cli version for the container
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"version": "latest"
+		},
+		// The next line opts to include the latest gcloud version for the container
+		"ghcr.io/dhoeric/features/google-cloud-cli:1": {
+			"version": "latest"		
+		},
+		
+		// The next line opts to include the latest PowerShell version for the container
+		"ghcr.io/devcontainers/features/powershell:1": {
+			"version": "latest"
+		}
+	},
+	// Use this environment variable if you need to bind mount your local source code into a new container.
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	"customizations": {
+				"vscode": {
+					// Set *default* container specific settings.json values on container create.
+					"extensions": [
+						"ms-azuretools.vscode-docker",
+						"ms-vscode.powershell"
+						//"googlecloudtools.cloudcode" # Removed because, when the Codespace is build, its extention page was open rather than the readme page 
+					],
+					"settings": {
+						// below sets the default terminal for linux to PowerShell
+						"terminal.integrated.defaultProfile.linux": "pwsh",
+						"terminal.integrated.copyOnSelection": true,
+						"terminal.integrated.defaultProfile.windows": "PowerShell",
+						"terminal.integrated.profiles.windows": {
+						"PowerShell": {
+							"path": "pwsh",
+							"args": [],
+							"icon": "terminal-powershell",
+							"useAcrylic": true,
+							"acrylicOpacity": 0.75,
+							"colorScheme": "Solarized Dark",
+							"experimental.redeployOnFileChange": true
+						}
+						},
+						"workbench.colorCustomizations": {
+						"terminal.background": "#15662f",
+						"terminal.foreground": "#f6f922"
+						}
+				}
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "docker --version",
+	"postCreateCommand": "pwsh ./101-Automated-Authentication-With-GCP/001-Auto-GCP-Authentication.ps1"
+	
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"	
+}
