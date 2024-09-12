@@ -2,18 +2,17 @@
 
 Use this script to create a Windows VM with MSSQL on GCP
 
-To use this script you must have created the following additional Codespace secrets
+To use this script you must have created the following additional Codespace Secrets
 
 CS_201_SEVER_AND_IP_REGION
 CS_201_SEVER_AND_IP_ZONE
 CS_201_MS_SQL_SERVER_NAME
 
-Plus, if you would like to decide the name of your server you will also need to create an RFC1035 compliant Codespace secrets called:
+The CS_201_MS_SQL_SERVER_NAME if for the server name which you can make up yourself but according 
+to the Google documentation it must be RFC1035 compliant.
 
+For RFC1035 compiance and GCP naming conventions see: https://cloud.google.com/compute/docs/naming-resources#resource-name-format
 
-
-If you have not created this Codespace secret it will be created for you with a unique RFC1035 compliant server name.
-For RFC1035 compiance and GCP naming conventions see: https://cloud.google.com/compute/docs/naming-resources#resource-name-format 
 
 THE STEPS IN THIS SCRIPT ARE SUMMERISED BELOW
 
@@ -44,17 +43,17 @@ if (Test-Path env:CS_201_MS_SQL_SERVER_NAME) {
 }
 
 if (Test-Path env:CS_201_SEVER_AND_IP_ZONE) {
-    Write-Host "CS_201_SEVER_AND_IP_ZONE found with string : " + $env:CS_201_SEVER_AND_IP_ZONE;
+    Write-Host "CS_201_SERVER_AND_IP_ZONE found with string : " + $env:CS_201_SERVER_AND_IP_ZONE;
 } else {
-    Write-Host "In order to create a server instance a Codespace called CS_201_SEVER_AND_IP_ZONE is required.     
-    Please add a Codespace Secret called CS_201_SEVER_AND_IP_ZONE and Reload this Codespace and Browser and 
+    Write-Host "In order to create a server instance a Codespace called CS_201_SERVER_AND_IP_ZONE is required.     
+    Please add a Codespace Secret called CS_201_SERVER_AND_IP_ZONE and Reload this Codespace and Browser and 
     run this script again.  
     Please refer to the README.md file for more details"
     Break;
 }
 
-if (Test-Path env:CS_201_SEVER_AND_IP_REGION) {
-    Write-Host "CS_201_SEVER_AND_IP_REGION found with string : " + $env:CS_201_SEVER_AND_IP_REGION;
+if (Test-Path env:CS_201_SERVER_AND_IP_REGION) {
+    Write-Host "CS_201_SERVER_AND_IP_REGION found with string : " + $env:CS_201_SERVER_AND_IP_REGION;
 } else {
     Write-Host "In order to create a server instance a Codespace called CS_201_SEVER_AND_IP_REGION is required.     
     Please add a Codespace Secret called CS_201_SEVER_AND_IP_REGION and Reload this Codespace and Browser and 
@@ -65,9 +64,9 @@ if (Test-Path env:CS_201_SEVER_AND_IP_REGION) {
 
 # PART 2 - Build the VM based on the paramaters and Goolges OS image : sql-2022-web-windows-2022-dc-v20240415
 
-gcloud compute instances create $env:CS_201_MS_SQL_SERVER_NAME `
+gcloud compute instances create $env:CS_201_MS_SQL_SERVER_NAME ` 
 --project=$env:CS_101_PROJECT_ID `
---zone=$env:CS_201_SEVER_AND_IP_ZONE `
+--zone=$env:CS_201_SERVER_AND_IP_ZONE `
 --machine-type=n2-standard-2 `
 --network-interface=stack-type=IPV4_ONLY,subnet=default,no-address `
 --can-ip-forward `

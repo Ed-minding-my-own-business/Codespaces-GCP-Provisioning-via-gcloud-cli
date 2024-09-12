@@ -189,7 +189,9 @@ To list Compute Engine Regions you can use this command in the Codespace PowerSh
 
 ***Server Name & IP Address Name***
 
-You will also need a name for your server. If you want to reserve a public IP address for this server you will need a name for the IP address you reserve too. You can create you own names (as long as they are RFC1035 compliant) or use the first script in this directory called **201-01-Suggest-A-Server-And-IP-Name.ps1**.  
+For GCP compute engine naming conventions see: https://cloud.google.com/compute/docs/naming-resources#resource-name-format
+
+You will also need a name for your server. If you want to reserve a public IP address for this server you will need a GCP compliant name for the IP address you reserve too. You can create you own names or use the first script in this directory called **201-01-Suggest-A-Server-And-IP-Name.ps1**.  
 
 As I like to keep server names and IP address names consistent, I use **201-01-Suggest-A-Server-And-IP-Name.ps1** to create them. The names generated are then added to the last line in the two files listed below 
 
@@ -200,7 +202,7 @@ I then add these as Codespace Secrets and reload the Codespace and browser:
 
 `CS_201_MS-SQL-SERVER-NAME`
 
-`CS_201_PUBLIC-IP-ADDRESS`
+`CS_201_PUBLIC_IP_ADDRESS_NAME`
 
 ## Adding Secrets and Reloading The Codespace 
 
@@ -231,7 +233,7 @@ The Powershell provisioning scripts are listed below:
 
 201-07-Update-Firewall-For-Public-Access.ps1
 
-Hopefully their functions are self explanatory....
+Hopefully the purpose of these scripts is self explanatory....
 
 ## 301-Scripts-To-Configure-MS-SQL-VM
 

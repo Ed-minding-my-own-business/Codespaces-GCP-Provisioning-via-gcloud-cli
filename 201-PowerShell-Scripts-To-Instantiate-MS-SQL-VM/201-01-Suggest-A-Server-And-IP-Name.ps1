@@ -1,13 +1,12 @@
 <# 201-01-Suggest-A-Server-And-IP-Name
 
-This script is designed to be run in it entirety. For instructions of how to run a script in its entirety please refer
-to the READNE.md
+To create a server using the next script in this folders called 201-02-Build-An-MS-SQL-Server-2022.ps1 a GCP complient 
+server name is required. This server name must be stored in a Codespace Secret called CS_201_MS_SQL_SERVER_NAME.
 
-To create a server using the next script in this folders called 201-02-Build-An-MS-SQL-Server-2022.ps1 a 
-server name is required. This server name must be stored in a Codespace Secrete called CS_201_MS_SQL_SERVER_NAME.
-
-Also, to create a Public IP address using script in this folder called 201-05-Register-A-Public-IP-Address.ps1 an 
+Also, to create a Public IP address using script in this folder called 201-05-Register-A-Public-IP-Address.ps1 a GCP complient
 IP address name is required. This Public IP address name must be stored in a Codespace Secrete called CS_201_Public_IP_ADDRESS_NAME.
+
+For GCP naming conventions see: https://cloud.google.com/compute/docs/naming-resources#resource-name-format
 
 You can add these Codespace Secret at any time, but in order for the Codespace to have access to it you will need to 
 Reload the Codespace and the browser.
@@ -21,8 +20,8 @@ Git-Ignore-Public-IP.txt
 
 I then add these as Codespace Secrets and reload the Codespace and browser:
 
-CS_201_MS-SQL-Server-Name
-CS_201_Public-IP-Address
+CS_201_MS_SQL_SERVER_NAME
+CS_201_PUBLIC_IP_ADDRESS_NAME
 
 RUNNING THIS SCRIPT
 
@@ -58,12 +57,12 @@ $SuggestedPublicIPaddressName = "public-ip-address-for-" + $SuggestedServerName;
 # Then iether way add the Server Name to a new line at the end of the file.
 
 if (Test-Path ./Git-Ignore-MS-SQL-Server-Names.txt) {
-    Add-Content -Path ./Git-Ignore-MS-SQL-Server-Names.txt -Value $SuggestedPublicIPaddressName
+    Add-Content -Path ./Git-Ignore-MS-SQL-Server-Names.txt -Value $SuggestedServerName
  
 } else {
 
     New-Item ./Git-Ignore-MS-SQL-Server-Names.txt
-    Set-Content ./Git-Ignore-MS-SQL-Server-Names.txt $SuggestedPublicIPaddressName
+    Set-Content ./Git-Ignore-MS-SQL-Server-Names.txt $SuggestedServerName
 
 }
 
@@ -72,12 +71,12 @@ if (Test-Path ./Git-Ignore-MS-SQL-Server-Names.txt) {
 
 if (Test-Path ./Git-Ignore-Public-IP.txt) {
 
-    Add-Content -Path ./Git-Ignore-Public-IP.txt -Value $SuggestedServerName
+    Add-Content -Path ./Git-Ignore-Public-IP.txt -Value $SuggestedPublicIPaddressName
  
 } else {
 
     New-Item Git-Ignore-Public-IP.txt
-    Set-Content Git-Ignore-Public-IP.txt -Value $SuggestedServerName
+    Set-Content Git-Ignore-Public-IP.txt -Value $SuggestedPublicIPaddressName
 }
 
 
@@ -101,19 +100,11 @@ Write-Output "These two names have been save temporerally as the last line in fi
 Write-Output "'Git-Ignore-MS-SQL-Server-Names.txt' and 'Git-Ignore-Public-IP-address-name.txt' "
 Write-Output "in this project's root directory. Please add these values to Codespace Secrets called: "
 Write-Output ""
-Write-Output "CS_201_MS-SQL-Server-Name"
-Write-Output "CS_201_Public-IP-Address"
-Write-Output ""
-Write-Output "For instructions how to do this please refer to this projects README.MD file"
+Write-Output "CS_201_MS_SQL_SERVER_NAME"
+Write-Output "CS_201_PUBLIC_IP_ADDRESS_NAME"
 Write-Output ""
 Write-Output "PLEASE NOTE:"
 Write-Output "For scripts to access new Codespace Secrets you will need to Reload this "
-Write-Output "Codespace (which restarts the Codespace OS and reloads the browser). If available follow "
-Write-Output "the on screen prompts. These will usually popup in the bottom right corner of the browser"
-Write-Output "when a new Codespace Secrets is created."
-Write-Output ""
-Write-Output "Otherwise open the 'Command Pallet' and find and execute '>Developer: Reload Window' "
-Write-Output "or '>Codespace: Reload Window' depending which is available."
-Write-Output ""
-Write-Output "The Command Pallet can be openned using keyboard shortcuts'Cmd' + 'P' (Mac) or 'Ctrl' + P (Windows/Linux)."
-Write-Output "Or via the 'Hamburger' icon (usualy found in the top left corner) > View > Command Pallet..."
+Write-Output "Codespace (which restarts the Codespace OS and reloads the browser)."
+Write-Output "For instructions how to add Codespace Secrets and Reload the Codespace and browser"
+Write-Output "please refer to this projects README.MD file"
