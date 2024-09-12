@@ -31,6 +31,10 @@ gcloud version
 
 y
 
+# List enabled APIs on your Project
+
+gcloud services list --enabled --project $env:CS_101_PROJECT_ID
+
 
 # If you are not logged in check that you have added the Codespace CS_101_PROJECT_ID Secret correctly.
 # If the Codespace Secret has been declared correctly its value should be returned with this command
@@ -74,3 +78,7 @@ gcloud services list --available
 #see - https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules
 
 gcloud compute firewall-rules list
+
+# List enabled APIs on your Project
+
+gcloud services list --enabled --project $env:CS_101_PROJECT_ID
