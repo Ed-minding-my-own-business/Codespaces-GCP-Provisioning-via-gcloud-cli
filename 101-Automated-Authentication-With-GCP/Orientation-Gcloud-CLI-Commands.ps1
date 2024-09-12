@@ -29,7 +29,7 @@ gcloud version
 
 # Check you are logged in GCP with permissions to view the current project
 
-gcloud projects list
+y
 
 
 # If you are not logged in check that you have added the Codespace CS_101_PROJECT_ID Secret correctly.

@@ -1,14 +1,15 @@
-# Codespaces-GCP-Provisioning-via-gcloud-cli
-
 Author: Ed Fraser circa June 2024
+Accompanying Youtube video ******************************************************************************************
+
 <br>
 
 ## Intro 🤖 
 
 <br>
 
-**This repo programmatically authenticates to a Google Cloud Platform (GCP) account when deployed as a Codespace and allows (and provides scripts for)
-GCP provisioning via the Codespace terminal and PowerShell**
+**This repo programmatically authenticates to a Google Cloud Platform (GCP) account when deployed as a Codespace. Authentication 
+is achieved through the use of Codespace Secrets. Example scripts are provided to provision and deploy servers via the Codespace 
+terminal and PowerShell**
 
 <br>
 
@@ -16,7 +17,7 @@ GCP provisioning via the Codespace terminal and PowerShell**
 
 <br>
 
-> **Codespaces allow development from almost any internet connected smart device or computer. Codespaces also offer
+> **Codespaces can be deployed from almost any internet connected smart device or computer. Codespaces also offer
 > a consistent dev environment and seamless integration with GitHub repositories meaning that once a script has been
 > written it can be added to git in the Codespace and pushed to GitHub using familiar cli commands or VScode extensions. 
 > No need for git initialisation or GitHub credentials as GitHub authorisation and the git repo are 'baked in' 🥧.**
@@ -34,7 +35,10 @@ The repo is organised into levels which group different sets for functions and p
 
 This repo contains folders with the same names as above. The purpose of the scripts in these folders are discussed below:
 
-## 101-Automated-Authentication-with-GCP
+# 101-Automated-Authentication-with-GCP
+
+This folder contains scripts which automatically run on deployment and authenticate with GCP. Other scripts in this file can be run 
+manually to interact with GCP and other services.
 
 <br>
 
@@ -43,116 +47,183 @@ This repo contains folders with the same names as above. The purpose of the scri
 
 <br>
 
-### Codespace Instantiation
+## Codespace Instantiation
 
-When this repo is instantiated as a Codespace the first two files in the  **101-Automated-Authentication-with-GCP** are executed.
+When this repo is instantiated as a Codespace the first two files in the  **101-Automated-Authentication-with-GCP** folder are executed.
 
-+ **001-Auto-GCP-Authentication.ps1** - Is a PowerShell script that authenticates to your Google Cloud Platform account.
-+ **002-Auto-Install-SSHPASS.ps1** - Installs 'SSHPASS'. However, SSHPASS until level **301-Scripts-To-Configure-MS-SQL-VM**
-    
-In **101-Automated-Authentication-With-GCP** you will also find files starting with the word **Orientation** followed by the name of 
-the console applications they relate to. These files contain code snippets you can run manually via the command line interface. 
-
-<br>
++ **001-Auto-GCP-Authentication.ps1** - PowerShell script to authenticate to your GCP account.
++ **002-Auto-Install-SSHPASS.ps1** - Installs 'SSHPASS' for level **301-Scripts-To-Configure-MS-SQL-VM**
 
 
-### Pre-requisites
+## Pre-requisites
 
-There are three steps that you need to have taken before you can build a Codespace that automatically authenticates with Google Cloud Platform.
+There are two steps that you need to have taken before you can build a Codespace that automatically authenticates with Google Cloud Platform.
 
-#### Firstly: A GCP Account, Project & Service Account
+### Firstly: Create A GCP Account, Project & Service Account
 
-If you haven't already done so you will need to create the following:
+If you haven't already done so you will need to create and configure the following:
 
-- **A Google Cloud Platform (GCP) account: https://cloud.google.com**
+- A Google Cloud Platform (GCP) account: https://cloud.google.com
 
-- **You may want to create an Organisation to help group your projects.**
-
-- **Create a project and record the project's unique identifier**
+- Create a project and record the **Project ID** 
   
-- **Enable the appropriate APIs for the project**
+- Enable 'Service Usage' API on the project
 
-- **Create a Service Account and record its email address**
+- Create a Service Account and record its **Service Account Email Address**
 
-- **Grant this Service Account the appropriate permissions**
+- Grant this Service Account the 'Editor' role 
 
-- **Generate an api key for this Service Account**
+- Generate a **JSON Api Key** for this Service Account and record it
+
+For help setting up a GCP account please see this section of my accompanying Youtube video 
+******************************************************************************************
 
 <br>
 
-#### Secondly: Codespace Secrets - Level 101
+
+### Secondly: Add Level 101 Codespace Secrets 
 
 You will need to add three Codespace Secrets to authenticate with GCP. These should be called:
 
 <br>
  
-CS_101_PROJECT_ID                          - Must contain the **Project ID**
+`CS_101_PROJECT_ID`                         
 
-CS_101_SERVICE_ACCOUNT_EMAIL_ADDRESS       - Must contain the email address that identifies the **Service Account**
+`CS_101_SERVICE_ACCOUNT_EMAIL_ADDRESS`       
 
-CS_101_SERVICE_ACCOUNT_JSON_SECRET         - Must contain the **JSON Secret** including the '{' and '}' and everything between
+`CS_101_SERVICE_ACCOUNT_JSON_SECRET`        
 
 <br>
 
-NB: The **Project ID** is based on the original Project Name but cannot be changed and is lower case letters with hyphens but not spaces. 
+Use these for the **Project ID**, the **Service Account Email Address** and the **JSON Api Key** respectively
+
+<br>
+
+> [!TIP] 
+> The **Project ID** cannot be changed and is lower case letters and numbers with hyphens but not spaces. 
+
+<br>
+
+> [!TIP]
+> The **JSON Api Key** is a large block of text. Including the '{' and '}' and everything in between.
+
+<br>
+
+To see how to add Codespace Secrets to a GitHub repo please see this section of my accompanying Youtube video:
 
 ******************************************************************************************
 
-To add the codespace secrets 
-
-<br>
-
-#### Lastly: GCP Permissions & Apis
-
-One might think that if you are the owner of the account or organisational unit within the account you would automatically be 
-granted all the permissions you need to do anything you wanted on the account. 
-In my experience this is not the case. However you should have permission to give yourself the permissions you need to do anything
-you want on the account. It's then just a question of identifying which roles you need to grant yourself 
-to get these permissions.
-
-As of August 2024 according to [Permissions](https://gcp.permissions.cloud/), GCP has 10,174 known IAM actions and 1,674
-Predefined Roles. As daunting as this may sound, adding the correct roles (groups of permissions/available AIM actions) 
-is helped immeasurably by the feedback you get if you are willing to try everything first on the GCP website....
-
-Invariably, if you are unable to do something it is because you do not have persisson to do it or have not yet enabled an api needed to interact 
-with the service you want to use. 
-
-Fortunately, In my experience, the feedback will usually tell you the IAM actions you require permissions for or lead you to the page to 
-enable the appropriate API. Unfortunately however, it will not make sensible suggestions as to which roles you might want to grant yourself 
-(or your service accounts) to enable the relevant IAM actions.
-
-Typically I look at a list of possible Roles I can see include the Actions needed and grant myself the one that sounds like it makes the most sense. 
-Alternatively, you may be able to grant yourself granular premissions for just the specific actions you and/or the Service Account require. 
-I personally prefer to give myself roles that cover at least the Actons I need. We will look at roles for the Service Accounts when we set it up below.
-
-As for the roles you need to create the service account, you should be able to grant these to yourself. Or get someone in your organisation to grant them to you.
-
-<br>
-
-### Time to Instantiate your Codespace ⏱️ 
-
 <br>
 
 
-
-
-<br>
-
-## 201-PowerShell-Scripts-To-Instantiate-MS-SQL-VM
+## Time to Instantiate your Codespace ⏱️ 
 
 <br>
 
-### Intro
+Once the Codespace Secrets have been added it is time to deploy the repo as a Codespace. This will typically take 3 to 4 minutes. The last action in the deployment process will create a file with the Codespace server's date and time called Git-Ignore-TimeInitiated.txt . Once this has been created you can interact with the Codespace. If you require help deploying the Codespace please see this section of my accompanying Youtube video.
 
-In this folder you will find a set of script files to **Provision, Instanciate and run, Stop and Restart a VM, update firewall settings and associate a public ip address to the vm** 
+******************************************************************************************
 
-201-01-Generate-A-Server-Name.ps1
+## Orientation & Familiarisation
 
-201-02-Build-An-MS-SQL-server-2022.ps1
+In the **101-Automated-Authentication-With-GCP** folder you will also find files starting with **101-Orientation** followed by the name of 
+the console applications they relate to. These scripts are designed to help you familiarise yourself with these services. The files 
+contain code snippets you can run manually via the command line interface. 
 
-201-03-Stop-The-MS-SQL-server-2022.ps1
+<br>
 
-201-04-Restart-The-MS-SQL-server-2022.ps1
+## Saving Changes To Git And GitHub
+
+If you add your own commands to the **101-Orientation** files (or any other folders in the repo) and would like these reflected in your fork/clone of this repo then you can interact with git and GitHub just as you would if you were working locally. Better yet your .git file is pre initiated ready for you to run CLI console commands like 'git add -A' and 'git commit -m"..."' in the PowerShell Terminal.
+
+Furthermore, GitHub is pre configured so you can 'git push' when you are ready to upload your changes to GitHub. 
+
+However, please note that files starting with 'Git Ignore' will not not be added. Please review the '.gitignore' file for details.
+
+<br>
+
+# 201-PowerShell-Scripts-To-Instantiate-MS-SQL-VM
+
+<br>
+
+## Intro
+
+In this folder you will find a set of PowerShell script files to **Provision, Instantiate and run, Stop and Restart a VM. Reserve a public ip address and associate it to the vm and update necessary firewall settings** 
+
+## Running PowerShell Scripts
+
+All the PowerShell Scripts in **201-PowerShell-Scripts-To-Instantiate-MS-SQL-VM** are designed to be run in their entirety. If you would like to know how to do this, please read the file called [HOW-TO-RUN-POWERSHELL-SCRIPTS.md](HOW-TO-RUN-POWERSHELL-SCRIPTS.MD)
+
+
+## Codespace Secrets - Level 201
+
+You will need to add another four Codespace Secrets to run all the scripts in this folder. These must have the following names:
+
+<br>
+
+`CS_201_SERVER_AND_IP_ZONE`
+
+`CS_201_SERVER_AND_IP_REGION`
+
+`CS_201_MS_SQL_SERVER_NAME`
+
+`CS_201_PUBLIC_IP_ADDRESS_NAME`
+
+***Zone***
+
+Before you are able to deploy a VM you will need to decide which Data Center you want it deployed in. This is determined by the 'Zone' you select. 
+
+Once you have decided the Zone you will need to add it as a Codespace Secret called `CS_201_SEVER_AND_IP_ZONE`. 
+
+To list Compute Engine Zones you can use this command in the Codespace PowerShell CLI:
+
+`gcloud compute zones list`
+
+***Region***
+
+If you intend to add a public IP address you will need to allocate it to a 'Region'. Once you have decided the Region you will need to add it as a Codespace Secret called `CS_201_SERVER_AND_IP_REGION`.
+
+To list Compute Engine Regions you can use this command in the Codespace PowerShell CLI:
+
+`gcloud compute regions list`
+
+***Server Name & IP Address Name***
+
+You will also need a name for your server. If you want to reserve a public IP address for this server you will need a name for the IP address you reserve too. You can create you own names (as long as they are RFC1035 compliant) or use the first script in this directory called **201-01-Suggest-A-Server-And-IP-Name.ps1**.  
+
+As I like to keep server names and IP address names consistent, I use **201-01-Suggest-A-Server-And-IP-Name.ps1** to create them. The names generated are then added to the last line in the two files listed below 
+
+Git-Ignore-MS-SQL-Server-Names.txt
+Git-Ignore-Public-IP.txt
+
+I then add these as Codespace Secrets and reload the Codespace and browser:
+
+`CS_201_MS-SQL-SERVER-NAME`
+
+`CS_201_PUBLIC-IP-ADDRESS`
+
+## Adding Secrets and Reloading The Codespace 
+
+Codespace Secrets are added in the same way as in level **101-Automated-Authentication-With-GCP**. 
+However, when Codespace Secrets are added after the Codespace has been initiated the Codespace must be reloaded (which restarts the Codespace OS and reloads the browser).
+
+If available follow the on screen prompts. These will usually pop up in the bottom right corner of the Codespace browser page soon after a new Codespace Secret has been added to the repo on GitHub.
+
+If the pop up does not appear, or you miss the prompt, then the Codespace can be reloaded manually. To reload the Codespace manually open the 'Command Pallet' and find and execute either '>Developer: Reload Window' or '>Codespace: Reload Window' depending which is available.
+
+The Command Pallet can also be opened using keyboard shortcuts'Cmd' + 'P' (Mac) or 'Ctrl' + P (Windows/Linux). Or via the 'Hamburger' icon (usually found in the top left corner) > View > Command Pallet...
+
+## Provisioning Scripts 
+
+The Powershell provisioning scripts are listed below: 
+
+201-01-Suggest-A-Server-And-IP-Name.ps1
+
+201-02-Build-An-MS-SQL-Server-2022.ps1
+
+201-03-Stop-The-MS-SQL-Server-2022.ps1
+
+201-04-Restart-The-MS-SQL-Server-2022.ps1
 
 201-05-Register-A-Public-IP-Address.ps1
 
@@ -160,70 +231,9 @@ In this folder you will find a set of script files to **Provision, Instanciate a
 
 201-07-Update-Firewall-For-Public-Access.ps1
 
-###Codespace Secrets - Level 101
-
-You will need to add three Codespace Secrets to authenticate with GCP. These should be called:
-
-<br>
-
-CS_201_SEVER_AND_IP_REGION
-CS_201_SEVER_AND_IP_ZONE
-CS_201_MS-SQL-Server-Name
-
-+ **Provision and deploy a SQL server 2022 VM and databases.**	
-
-+ **Start and Stop the VM**
-	
-+ **Configure public IP addresses and associate them to the VM**
-	
-+ **Set fire wall rules to allow public database access**
-	
-
+Hopefully their functions are self explanatory....
 
 ## 301-Scripts-To-Configure-MS-SQL-VM
-
-
-+ **Configure ssh to login to VMs**
-	
-+ **Programatically administrate the databases**
-
-Phase 2
-
-+ **Build a database from a backup**
-
-<br>
-  
-
-> [!IMPORTANT] 
-> To auto authenticate the Codespace generated by your clone/fork of this repo you will need a **GCP account** with a **GCP project**,
-> a **Service Account** for that project and a **Service Account api key**. You will also need to enable the nessesary APIs for that project.
-> See the **[Creating a GCP Account Project & Service Account](https://github.com/edwardfraser2002/Codespaces-GCP-Provisioning-via-gcloud-cli/blob/main/README.md#creating-a-gcp-account-project--service-account)** section below.
-> You and the service account you generate will also need relevant permissions. See the **[GCP Permissions](https://github.com/edwardfraser2002/Codespaces-GCP-Provisioning-via-gcloud-cli/edit/main/README.md#gcp-permissions--apis)** section below.
-> You will also need to create Codespace Secrets containing the **Project Identifier**, the **Service Account name**
-> and the **Service Account API key**. See the [**Codespace Secrets**](https://github.com/edwardfraser2002/Codespaces-GCP-Provisioning-via-gcloud/edit/main/README.md#codespace-secrets) section below.
-
-
-
-
-
-
-
-
-
-### Automations run on Codespace startup
-
-Automated processes include:
-
-1 Authentication of the connection to GCP - GCP01-Autho.ps1
-
-2 Installation of SSHPASS in the new Codespace - GCP02-Env-Config.ps1
-
-## Intro to GCP and gcloud & Google CloudShell
-
- 
->[!WARNING]
-> Please note that deleting the Codespace build by this repo will not undo the changes made on GCP.
-> You will need to use your GCP account to do this. 
 
 
 
@@ -233,49 +243,7 @@ Automated processes include:
 
 https://console.cloud.google.com/cloud-resource-manager
 
-### Authentication
-
-<br>
-
-
-
->
-Therefore: mcr.microsoft.com/devcontainers/base:bullseye
-
-GCP and PowerShell are then added to this image in the devcontainerfile with the follow to Features.
-
-`"features": {
-		"ghcr.io/dhoeric/features/google-cloud-cli:1": {
-			"version": "latest"		
-		},
-		//"ghcr.io/joshuanianji/devcontainer-features/gcloud-cli-persistence:1": {},
-		"ghcr.io/devcontainers/features/powershell:1": {
-			"version": "latest"
-		}`
-
-
-These Fearures enable the executions of comands on Google Cloud Platform via the Teminal CLI (in this case PowerShell) using  the gcloud command.
-
-Some comands to help get started include:
-
-`gcloud version`
-
-`gcloud help help`
-
-`gcloud projects list` 
-
-`gcloud alpha projects search`
-
-This youtube video was a great help getting started 
 
 https://www.youtube.com/watch?v=KeZ2ncbVPyE
 
 
-
-
-
-Get info on a SQL instance:
-gcloud sql instances describe ppu-gcp-db-v01 --project=ppu-gcp-ms-sql-fallback-server
-
-
-## PUbilc IPs
